@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>後台維護</title>
+
+    
+    <style>
+      /* 修改點 1: 調整背景顏色，使其與白色卡片對比更明顯但柔和 */
+      body {
+          background-color: #eff3f8; 
+      }
+      .my-card {
+          width: 100%;
+      }
+      /* Home Settings Redesign Styles */
+      .home-preview-card {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 12px;
+          overflow: hidden;
+          position: relative;
+      }
+      .img-hover-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s;
+      }
+      .img-card:hover .img-hover-overlay {
+          opacity: 1;
+      }
+      .custom-tab {
+          min-width: 150px;
+          font-size: 1.1em;
+      }
+  </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
