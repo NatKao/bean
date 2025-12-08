@@ -29,7 +29,8 @@ import {
   faTriangleExclamation,
   faMoneyBillWave,
   faHotel,
-  faCircleInfo
+  faCircleInfo,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* 引入專案中使用的 Regular (空心/線條) 圖示 */
@@ -68,6 +69,7 @@ library.add(
   faMoneyBillWave,
   faHotel,
   faCircleInfo,
+  faChevronDown,
   // Regular Icons
   faIdCard,
   faFolderOpen,

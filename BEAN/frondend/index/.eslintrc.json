@@ -1,0 +1,76 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jquery": true
+  },
+  "extends": [
+    "plugin:vue/vue3-recommended",
+    "airbnb-base",
+    "plugin:prettier/recommended"
+  ],
+  "globals": { "Atomics": "readonly", "SharedArrayBuffer": "readonly" },
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["vue", "prettier"],
+  "rules": {
+    "prettier/prettier": "warn",
+    "linebreak-style": "off",
+    "indent": "off",
+    "newline-per-chained-call": "off",
+    "ignoreChainWithDepth": "off",
+    "no-tabs": "off",
+    "quote-props": "off",
+    "no-var": "warn",
+    "vars-on-top": "off",
+    "no-alert": "off",
+    "no-undef": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "comma-dangle": ["error", "never"],
+    "no-unused-vars": ["error", { "args": "none" }],
+    "arrow-parens": ["error", "as-needed"],
+    "no-trailing-spaces": "off",
+    "no-irregular-whitespace": "off",
+    "no-use-before-define": "off",
+    "import/order": "off",
+    "camelcase": "off",
+    "prefer-template": "off",
+    "prefer-destructuring": "off",
+    "spaced-comment": "off",
+    "func-names": "off",
+    "import/no-extraneous-dependencies": "off",
+    "dot-notation": "warn",
+    "eqeqeq": ["off", "smart"],
+    "yoda": "off",
+    "no-underscore-dangle": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "object-shorthand": "warn",
+    "no-restricted-globals": "off",
+    "prefer-const": "warn",
+    "no-shadow": ["error", { "allow": ["state"] }],
+    "no-continue": "off",
+    "vue/no-side-effects-in-computed-properties": "warn",
+    "no-unneeded-ternary": "warn",
+    "no-useless-escape": "off",
+    "vue/component-definition-name-casing": ["error", "PascalCase"],
+    "vue/no-v-for-template-key": "off",
+    "vue/no-multiple-template-root": "off",
+    "vue/comment-directive": "off",
+    "object-curly-newline": "off",
+    "vue/attribute-hyphenation": "off",
+    "vue/component-options-name-casing": ["error", "PascalCase"],
+    "vue/component-name-in-template-casing": [
+      "error",
+      "PascalCase",
+      {
+        "registeredComponentsOnly": true,
+        "ignores": ["/^q-/", "/^router-/"]
+      }
+    ],
+	"vue/v-on-event-hyphenation": "off"
+  }
+}
