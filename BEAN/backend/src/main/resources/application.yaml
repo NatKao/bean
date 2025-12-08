@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: demo
+
+  # ==============================
+  # 1. 資料庫連線設定 (PostgreSQL)
+  # ==============================
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # 請修改下方 your_database_name 為你的資料庫名稱
+    url: jdbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: 123456
+
+# ==============================
+# 2. MyBatis-Plus 設定
+# ==============================
+mybatis-plus:
+  # 如果你有手寫 XML SQL，請指定 XML 的位置 (選填，若全用 Annotation 可不寫)
+  mapper-locations: classpath*:/mapper/**/*.xml
+  
+  # 全域配置
+  configuration:
+    # 重要：開啟駝峰命名轉換 (user_name -> userName)，Postgres 必備
+    map-underscore-to-camel-case: true
+    
+    # 開發環境強烈建議開啟：將 SQL 打印在 Console，方便除錯
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  
+  # 全域策略配置 (選填)
+  global-config:
+    db-config:
+      # 設定主鍵類型 (AUTO: 資料庫自增, ASSIGN_ID: 雪花算法生成 Long ID)
+      # Postgres 若設定 SERIAL 則選 AUTO；若沒設自增則選 ASSIGN_ID
+      id-type: auto
