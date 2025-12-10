@@ -7,7 +7,7 @@
         <div class="flex justify-between items-center h-20">
           <router-link to="/" class="flex items-center cursor-pointer">
             <span class="text-2xl font-bold text-primary tracking-wider"
-              >清新旅宿</span
+              >水尾旅宿</span
             >
           </router-link>
 
@@ -150,7 +150,7 @@ const userStore = useUserStore();
 // Navigation config
 const navItems = [
   { path: "/", label: "首頁" },
-  { path: "/intro", label: "介紹" },
+  { path: "/intro", label: "民宿介紹" },
   { path: "/rules", label: "訂房須知" },
   { path: "/location", label: "地理位置" },
   { path: "/booking", label: "即刻預定" }

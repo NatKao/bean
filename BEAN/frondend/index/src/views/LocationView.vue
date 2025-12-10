@@ -13,22 +13,12 @@
           <font-awesome-icon
             :icon="['fas', 'location-dot']"
             class="mr-2 text-primary"
-          />545南投縣埔里鎮向善路102號
+          />545 南投縣埔里鎮向善路102號
         </p>
         <div class="space-y-6">
-          <div class="border-l-4 border-primary pl-4">
-            <h4 class="font-bold text-gray-800 text-lg">國道6號</h4>
-            <p class="text-sm text-gray-500 mt-2 leading-relaxed"
-              >下愛蘭交流道 → 右轉中山路四段 → 右轉善新橋(太陽廟前) → 右轉向善路
-              → 抵達。</p
-            >
-          </div>
-          <div class="border-l-4 border-secondary pl-4">
-            <h4 class="font-bold text-gray-800 text-lg">台14線</h4>
-            <p class="text-sm text-gray-500 mt-2 leading-relaxed"
-              >中山路四段 → 左轉善新橋(見太陽廟路口左轉) → 右轉向善路 →
-              抵達。</p
-            >
+          <div v-for="(locItem,i) in locationAry" class="border-l-4 border-primary pl-4" :key="i">
+            <h4 class="font-bold text-gray-800 text-lg">{{ locItem.title }}</h4>
+            <p class="text-sm text-gray-500 mt-2 leading-relaxed">{{ locItem.goto }}</p>
           </div>
         </div>
       </div>
@@ -47,5 +37,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
+
+const locationAry = ref([
+  {
+    title: "Plus Code",
+    goto: "XWQF+3J"
+  },
+  {
+    title: "經緯度",
+    goto: "東經：120°92'40.47\" 北緯：23°98'77.48\""
+  },
+  {
+    title: "國道6號",
+    goto: "下愛蘭交流道 → 右轉中山路四段 → 右轉善新橋(太陽廟前) → 右轉向善路 → 抵達。"
+  },
+
+  {
+    title: "台14線(往埔里方向)",
+    goto: "中山路四段 → 左轉善新橋(見太陽廟路口左轉) → 右轉向善路 → 抵達。"
+  }
+]);
 </script>

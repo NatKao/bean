@@ -12,7 +12,7 @@
           class="absolute top-0 left-0 w-20 h-20 bg-secondary rounded-br-full opacity-50"
         ></div>
         <h1 class="text-4xl md:text-5xl font-bold text-dark mb-6 leading-tight">
-          在山城埔里
+          在水尾民宿
           <br />
           <span class="text-primary">深呼吸</span>
         </h1>
@@ -20,8 +20,6 @@
           遠離都市喧囂，感受時間的緩慢流動。
           <br />簡單、純粹、清新的休憩體驗。
         </p>
-            <p>後端回應: {{ message }}</p>
-            <button @click="fetchData">呼叫後端</button>
         <button
           @click="$router.push('/booking')"
           class="w-fit px-8 py-3 bg-primary text-white rounded-full hover:bg-opacity-90 shadow-lg hover:translate-y-[-2px] transition-all"

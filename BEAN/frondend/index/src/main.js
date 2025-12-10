@@ -7,7 +7,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { FontAwesomeIcon } from "@/assets/libs/IconsLib.js";
 // import { FontAwesomeLayers } from "@fortawesome/vue-fontawesome";
 
-import BaseAxios from "@/assets/plugins/base.Axios/baseAxios.js";
+import baseAxios from "@/assets/plugins/base.Axios/baseAxios.js";
 
 import '@/assets/css/index.css';      // 引入 Tailwind CSS 在 Quasar 之後
 
@@ -38,19 +38,19 @@ app.use(router);
 app.use(setupCalendar, {});
 app.component("DatePicker", DatePicker);
 
-const mockUI = {
-    install(app) {
-        app.config.globalProperties.$notify = {
-            success: (msg) => alert(`✅ ${msg}`),
-            error: (msg) => alert(`❌ ${msg}`)
-        };
-        app.config.globalProperties.$loader = {
-            open: () => console.log('Loading start...'),
-            close: () => console.log('Loading end...')
-        };
-    }
-};
-app.use(mockUI);
-app.use(BaseAxios, { conf: app.config.globalProperties.$conf });
+// const mockUI = {
+//     install(app) {
+//         app.config.globalProperties.$notify = {
+//             success: (msg) => alert(`✅ ${msg}`),
+//             error: (msg) => alert(`❌ ${msg}`)
+//         };
+//         app.config.globalProperties.$loader = {
+//             open: () => console.log('Loading start...'),
+//             close: () => console.log('Loading end...')
+//         };
+//     }
+// };
+// app.use(mockUI);
+app.provide('$baseAxios', baseAxios)
 
 app.mount("#app");
