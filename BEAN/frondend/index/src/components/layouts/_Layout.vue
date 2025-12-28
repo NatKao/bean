@@ -7,7 +7,7 @@
         <div class="flex justify-between items-center h-20">
           <router-link to="/" class="flex items-center cursor-pointer">
             <span class="text-2xl font-bold text-primary tracking-wider"
-              >水尾旅宿</span
+              >水尾民宿</span
             >
           </router-link>
 
@@ -23,7 +23,7 @@
               >{{ item.label }}</router-link
             >
 
-            <div class="relative ml-4">
+            <!--<div class="relative ml-4">
               <button @click="handleUserBtnClick" class="px-4 py-2 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
                 <font-awesome-icon :icon="['fas', 'user']" />
                 {{ userDisplayLabel }}
@@ -65,7 +65,7 @@
                 @click="userMenuOpen = false"
                 class="fixed inset-0 z-40 cursor-default"
               ></div>
-            </div>
+            </div>-->
           </div>
 
           <div class="md:hidden flex items-center">
@@ -133,17 +133,18 @@
     <footer
       class="fixed bottom-0 left-0 right-0 z-40 bg-dark text-white py-4 text-center text-sm shadow-[0_-4px_10px_rgba(0,0,0,0.1)]"
     >
-      545南投縣埔里鎮向善路102號 | Tel: 049-1234567
+      545南投縣埔里鎮向善路102號 | Phone: 0980-072-867
     </footer>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/OcAuth.js";
 import { storeToRefs } from "pinia";  // 引入 storeToRefs解構
 
+const $msg = inject('$msg')
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -153,7 +154,8 @@ const navItems = [
   { path: "/intro", label: "民宿介紹" },
   { path: "/rules", label: "訂房須知" },
   { path: "/location", label: "地理位置" },
-  { path: "/booking", label: "即刻預定" }
+  { path: "/emptyroom", label: "空房查詢" },
+  
 ];
 
 const mobileMenuOpen = ref(false);
@@ -174,8 +176,9 @@ const handleUserBtnClick = () => {
   }
 };
 
-const handleLogout = () => {
-  if (confirm("確定要登出嗎？")) {
+const handleLogout = async () => {
+  const isOk = await $msg.confirm("確定要登出嗎？");
+  if (isOk) {
     userStore.logout(); // 呼叫 store 的 action
     userMenuOpen.value = false;
     mobileMenuOpen.value = false;

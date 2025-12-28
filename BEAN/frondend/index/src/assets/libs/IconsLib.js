@@ -3,74 +3,127 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 
 /* 引入專案中使用的 Solid (實心) 圖示 */
 import {
+  faCircleUser,
+  faHouse,
+  faImage,
   faUser,
+  faMapLocationDot,
   faCheck,
   faXmark,
-  faBars,
-  faPhone,
+  faList,
+  faAngleDown,
+  faCircle,
+  faInfo,
+  faExclamation,
+  faCircleCheck,
+  faMobileScreen,
   faEnvelope,
-  faHashtag,
-  faBaby,
+  faPerson,
+  faPersonDress,
+  faChildren,
+  faCertificate,
+  
+  faBars,
   faChevronLeft,
   faChevronRight,
-  faMobileScreen,
-  faUsers,
-  faCalendarDays,
-  faCircleCheck,
-  faWandMagicSparkles,
-  faLocationDot,
+  faWifi,
+  faCarSide,
   faCreditCard,
-  faCircleExclamation,
-  faCalendarXmark,
-  faShieldHalved,
-  faArrowRightFromBracket,
-  faClockRotateLeft,
-  faFloppyDisk,
-  faTriangleExclamation,
-  faMoneyBillWave,
-  faHotel,
-  faCircleInfo,
   faChevronDown,
+  faCircleExclamation,
+  faLocationDot,
+  // 新增 LoginView/ProfileView 需要的圖示
+  faMagnifyingGlass,
+  faPlus,
+  faMinus,
+  faFileExcel,
+  faDownload,
+  faPlusCircle,
+  faCalculator,
+  faCalendarXmark,
+  faPhone,
+  faCalendarDays,
+  faBed,
+  faUsers,
+  faBan,
+  faUserSlash,
+  faCircleInfo
 } from "@fortawesome/free-solid-svg-icons";
 
-/* 引入專案中使用的 Regular (空心/線條) 圖示 */
+/* 品牌 (Brands) 圖示 */
+import {
+  faLine,
+  faFacebook,
+  faGoogle
+} from "@fortawesome/free-brands-svg-icons";
+
+/* Regular Icons (空心/線條) */
 import {
   faIdCard,
   faFolderOpen,
-  faCalendar
+  faCalendar,
+  faSquareCheck, // Checked box (Regular style often looks better for checkboxes)
+  faSquare,       // Unchecked box
+  faClock
 } from "@fortawesome/free-regular-svg-icons";
 
 /* 將圖示加入 Library */
 library.add(
+  // Brands
+  faLine,
+  faFacebook,
+  faGoogle,
+
+  // Solid
+  faCircleUser,
+  faHouse,
+  faImage,
   faUser,
+  faMapLocationDot,
   faCheck,
   faXmark,
-  faBars,
-  faPhone,
+  faList,
+  faAngleDown,
+  faCircle,
+  faInfo,
+  faExclamation, 
+  faCircleCheck, 
+  faMobileScreen,
   faEnvelope,
-  faHashtag,
-  faBaby,
+  faPerson,
+  faPersonDress,
+  faChildren,
+  faCertificate,
+  
+  faBars,
   faChevronLeft,
   faChevronRight,
-  faMobileScreen,
-  faUsers,
-  faCalendarDays,
-  faCircleCheck,
-  faWandMagicSparkles,
-  faLocationDot,
+  faWifi,
+  faCarSide,
+  faClock,
   faCreditCard,
-  faCircleExclamation,
-  faCalendarXmark,
-  faShieldHalved,
-  faArrowRightFromBracket,
-  faClockRotateLeft,
-  faFloppyDisk,
-  faTriangleExclamation,
-  faMoneyBillWave,
-  faHotel,
-  faCircleInfo,
   faChevronDown,
-  // Regular Icons
+  faCircleExclamation,
+  faLocationDot,
+  faSquareCheck,
+  // 新增 LoginView/ProfileView 需要的圖示
+  faMagnifyingGlass,
+  faPlus,
+  faMinus,
+  faFileExcel,
+  faDownload,
+  faPlusCircle,
+  faCalculator,
+  faCalendarXmark,
+  faPhone,
+  faCalendarDays,
+  faBed,
+  faUsers,
+  faBan,
+  faUserSlash,
+  faCircleInfo,
+
+  
   faIdCard,
   faFolderOpen,
   faCalendar

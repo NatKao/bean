@@ -1,3 +1,13 @@
+<!-- 
+  File Name: IntroView.vue
+  Author: huanyao
+  Created Date: 2025-12-07
+  Description: 
+    此元件用於顯示旅館的房間介紹與環境設施。
+    包含頂部的房間切換選單、左側的詳細資訊區塊以及右側的圖片輪播/展示區塊。
+    支援手勢滑動切換圖片 (Mobile) 與左右按鈕切換 (Desktop)。
+  Reviewed Date: 2025-12-14 huanyao
+-->
 <template>
   <section
     class="max-w-7xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"
@@ -5,6 +15,7 @@
     <div
       class="w-full bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col min-h-[600px]"
     >
+      <!-- Top Scrollable Menu -->
       <div
         class="relative w-full border-b border-gray-100 bg-white group flex-none"
       >
@@ -49,6 +60,7 @@
       </div>
 
       <div class="flex-grow flex flex-col md:flex-row">
+        <!-- 1. 關於水尾 (Full Width, No Right Image Slide) -->
         <div
           v-if="currentRoom.id === '100'"
           class="w-full p-8 md:p-12 animate-fade-in"
@@ -72,10 +84,9 @@
                 >
                   <font-awesome-icon :icon="['fas', 'wifi']" />
                 </div>
-                <h3 class="font-bold text-lg mb-2">便利設施</h3>
+                <h3 class="font-bold text-lg mb-2">寬敞遊憩空間</h3>
                 <p class="text-sm text-gray-600"
-                  >全館免費高速
-                  WiFi，大廳提供冰箱與飲水機，隨時滿足您的需求。</p
+                  >打造類公園的舒適環境，適合小朋友自在遊玩、徹底放電。</p
                 >
               </div>
 
@@ -87,9 +98,9 @@
                 >
                   <font-awesome-icon :icon="['fas', 'car-side']" />
                 </div>
-                <h3 class="font-bold text-lg mb-2">停車與充電</h3>
+                <h3 class="font-bold text-lg mb-2">停車</h3>
                 <p class="text-sm text-gray-600"
-                  >提供免費自助停車場，特斯拉車主入住更享免費充電服務。</p
+                  >提供免費自助停車場。(至少可停家用汽車12台或一輛遊覽車)</p
                 >
               </div>
 
@@ -103,8 +114,7 @@
                 </div>
                 <h3 class="font-bold text-lg mb-2">舒適客房</h3>
                 <p class="text-sm text-gray-600"
-                  >5
-                  間精緻冷氣客房，配備平面電視與免費盥洗用品，給您最舒適的睡眠。</p
+                  >12間套房含冷氣，至多入住38人。(歡迎包場)</p
                 >
               </div>
             </div>
@@ -119,7 +129,7 @@
                     <font-awesome-icon
                       :icon="['fas', 'house']"
                       class="mr-3"
-                    />公共區域
+                    />房內與衛浴
                   </h4>
                   <ul class="space-y-3 text-gray-600">
                     <li class="flex items-center"
@@ -144,20 +154,8 @@
                       ><font-awesome-icon
                         :icon="['fas', 'check']"
                         class="text-green-500 mr-3 w-4"
-                      />特斯拉充電樁</li
+                      />淋浴/浴缸二合一 (附盥洗用品)</li
                     >
-                  </ul>
-                </div>
-                <div>
-                  <h4
-                    class="font-bold text-primary mb-4 flex items-center text-lg"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'bath']"
-                      class="mr-3"
-                    />房內與衛浴
-                  </h4>
-                  <ul class="space-y-3 text-gray-600">
                     <li class="flex items-center"
                       ><font-awesome-icon
                         :icon="['fas', 'check']"
@@ -176,17 +174,13 @@
                         class="text-green-500 mr-3 w-4"
                       />免費瓶裝水 / 快煮壺</li
                     >
-                    <li class="flex items-center"
-                      ><font-awesome-icon
-                        :icon="['fas', 'check']"
-                        class="text-green-500 mr-3 w-4"
-                      />淋浴/浴缸二合一 (附盥洗用品)</li
-                    >
                   </ul>
+                </div>
+                <div>
+                  <ImageCarousel :images="currentRoom.images" />
                 </div>
               </div>
             </div>
-
             <div
               class="mt-16 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-3xl p-8 md:p-12 text-center"
             >
@@ -201,7 +195,7 @@
                 class="flex flex-col md:flex-row items-center justify-center gap-6"
               >
                 <a
-                  href="tel:0912345678"
+                  href="tel:0980072867"
                   class="flex items-center gap-4 bg-white px-8 py-5 rounded-2xl shadow-sm border border-gray-100 hover:border-primary hover:shadow-md transition-all group w-full md:w-auto cursor-pointer"
                 >
                   <div
@@ -215,29 +209,29 @@
                       >Booking Line</div
                     >
                     <div
-                      class="text-2xl font-bold text-dark group-hover:text-primary transition-colors"
-                      >0912-345-678</div
+                      class="lg:text-2xl sm:text-sm font-bold text-dark group-hover:text-primary transition-colors"
+                      >0980-072-867</div
                     >
                   </div>
                 </a>
 
                 <a
-                  href="tel:0491234567"
                   class="flex items-center gap-4 bg-white px-8 py-5 rounded-2xl shadow-sm border border-gray-100 hover:border-gray-400 hover:shadow-md transition-all group w-full md:w-auto cursor-pointer"
                 >
                   <div
                     class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-xl group-hover:bg-gray-600 group-hover:text-white transition-colors"
                   >
-                    <font-awesome-icon :icon="['fas', 'phone']" />
+                    <font-awesome-icon
+                      :icon="['fab', 'line']"
+                      class="text-green-500"
+                    />
                   </div>
                   <div class="text-left">
                     <div
-                      class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5"
-                      >Tel</div
+                      class="text-xs text-green-500 font-bold uppercase tracking-wider mb-0.5"
+                      >Line ID</div
                     >
-                    <div class="text-2xl font-bold text-gray-600"
-                      >049-1234567</div
-                    >
+                    <div class="lg:text-2xl sm:text-sm font-bold text-gray-600">McBean</div>
                   </div>
                 </a>
               </div>
@@ -252,6 +246,110 @@
           </div>
         </div>
 
+        <!-- 2. 環境公共設施 (999) - 特殊排版 -->
+        <template v-else-if="currentRoom.id == '999'">
+          <div
+            class="w-full md:w-5/12 flex flex-col bg-white relative z-10 border-r border-gray-100 animate-fade-in"
+          >
+            <div class="p-8 md:p-12 flex-1 overflow-y-auto">
+              <h2 class="text-3xl font-bold text-dark mb-2">{{
+                currentRoom.name
+              }}</h2>
+              <p class="text-sm text-primary font-medium mb-6">{{
+                currentRoom.specs
+              }}</p>
+
+              <div class="space-y-6">
+                <div
+                  v-if="currentRoom.content && currentRoom.content.length > 0"
+                >
+                  <div class="flex flex-col gap-4">
+                    <div
+                      v-for="(item, index) in currentRoom.content"
+                      :key="index"
+                    >
+                      <!-- 改動部分: 調整樣式，將描述放在標題下方 -->
+                      <template
+                        v-if="typeof item === 'object' && item.type === 'desc'"
+                      >
+                        <div class="flex flex-col">
+                          <div
+                            class="flex items-center text-gray-700 font-medium text-lg"
+                          >
+                            <span
+                              class="w-2 h-2 bg-secondary rounded-full mr-3 flex-shrink-0"
+                            ></span>
+                            {{ item.title }}
+                          </div>
+                          <!-- 描述區塊 -->
+                          <div
+                            class="pl-5 mt-1 text-sm text-gray-500 space-y-1"
+                          >
+                            <p
+                              v-for="descLine in item.desc"
+                              :key="descLine"
+                              class="leading-relaxed"
+                            >
+                              {{ descLine }}
+                            </p>
+                          </div>
+                        </div>
+                      </template>
+                      <!-- 一般項目 -->
+                      <template v-else>
+                        <div class="flex items-center text-gray-700 text-lg">
+                          <span
+                            class="w-2 h-2 bg-secondary rounded-full mr-3 flex-shrink-0"
+                          ></span>
+                          {{ item }}
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: Single Image Loop -->
+          <div
+            class="w-full md:w-7/12 bg-gray-50 p-6 flex items-center justify-center relative group select-none h-[500px] md:h-auto"
+            @touchstart="handleTouchStart"
+            @touchend="handleTouchEnd"
+          >
+            <div
+              class="w-full h-full rounded-2xl overflow-hidden shadow-lg relative bg-gray-200"
+            >
+              <transition name="img-fade">
+                <img
+                  :key="currentDisplayImage"
+                  :src="currentDisplayImage"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </transition>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div
+              class="absolute inset-0 pointer-events-none flex justify-between items-center px-4 z-20"
+            >
+              <button
+                @click="manualChange(-1)"
+                class="pointer-events-auto bg-white/80 backdrop-blur text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hover:bg-white"
+              >
+                <font-awesome-icon :icon="['fas', 'chevron-left']" />
+              </button>
+              <button
+                @click="manualChange(1)"
+                class="pointer-events-auto bg-white/80 backdrop-blur text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hover:bg-white"
+              >
+                <font-awesome-icon :icon="['fas', 'chevron-right']" />
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- 3. 一般房型 (Other Rooms) -->
         <template v-else>
           <div
             class="w-full md:w-5/12 flex flex-col bg-white relative z-10 border-r border-gray-100 animate-fade-in"
@@ -265,9 +363,12 @@
               }}</p>
 
               <div class="space-y-8">
-                <p class="text-gray-600 leading-relaxed text-lg">{{
-                  currentRoom.desc || "暫無詳細描述"
-                }}</p>
+                <p
+                  v-show="currentRoom.desc"
+                  class="text-gray-600 leading-relaxed text-lg"
+                  :class="currentRoom.id === '700' ?'text-red-500' : '' "
+                  >{{ currentRoom.desc }}</p
+                >
 
                 <div
                   v-if="
@@ -294,6 +395,65 @@
                       ></span>
                       {{ item }}
                     </span>
+                  </div>
+                </div>
+
+                <div class="space-y-6">
+                  <div
+                    v-if="
+                      currentRoom.addTimes && currentRoom.addTimes.length > 0
+                    "
+                  >
+                    <h3
+                      class="font-bold text-dark mb-4 flex items-center text-lg"
+                    >
+                      可提供加價項目
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                      <div
+                        v-for="(item, index) in currentRoom.addTimes"
+                        :key="index"
+                      >
+                        <!-- 改動部分: 調整樣式，將描述放在標題下方 -->
+                        <template
+                          v-if="
+                            typeof item === 'object' && item.type === 'desc'
+                          "
+                        >
+                          <div class="flex flex-col">
+                            <div
+                              class="flex items-center text-gray-500 font-medium text-lg"
+                            >
+                              <span
+                                class="w-2 h-2 bg-secondary rounded-full mr-3 flex-shrink-0"
+                              ></span>
+                              {{ item.title }}
+                            </div>
+                            <!-- 描述區塊 -->
+                            <div
+                              class="pl-5 mt-1 text-sm text-gray-400 space-y-1"
+                            >
+                              <p
+                                v-for="descLine in item.desc"
+                                :key="descLine"
+                                class="leading-relaxed"
+                              >
+                                {{ descLine }}
+                              </p>
+                            </div>
+                          </div>
+                        </template>
+                        <!-- 一般項目 -->
+                        <template v-else>
+                          <div class="flex items-center text-gray-700 text-lg">
+                            <span
+                              class="w-2 h-2 bg-secondary rounded-full mr-3 flex-shrink-0"
+                            ></span>
+                            {{ item }}
+                          </div>
+                        </template>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -328,46 +488,37 @@
             </div>
           </div>
 
+          <!-- Right Side: Single Image Loop -->
           <div
-            class="w-full md:w-7/12 bg-gray-50 p-6 flex gap-4 min-h-[500px] relative group select-none"
+            class="w-full md:w-7/12 bg-gray-50 p-6 flex items-center justify-center relative group select-none h-[500px] md:h-auto"
             @touchstart="handleTouchStart"
             @touchend="handleTouchEnd"
           >
             <div
-              class="flex-1 rounded-2xl overflow-hidden shadow-lg relative bg-gray-200"
+              class="w-full h-full rounded-2xl overflow-hidden shadow-lg relative bg-gray-200"
             >
               <transition name="img-fade">
                 <img
-                  :key="introImg1"
-                  :src="introImg1"
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </transition>
-            </div>
-            <div
-              class="flex-1 rounded-2xl overflow-hidden shadow-lg relative bg-gray-200 mt-12 mb-[-3rem]"
-            >
-              <transition name="img-fade">
-                <img
-                  :key="introImg2"
-                  :src="introImg2"
+                  :key="currentDisplayImage"
+                  :src="currentDisplayImage"
                   class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
               </transition>
             </div>
 
+            <!-- Navigation Controls -->
             <div
               class="absolute inset-0 pointer-events-none flex justify-between items-center px-4 z-20"
             >
               <button
                 @click="manualChange(-1)"
-                class="pointer-events-auto bg-white/90 text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100"
+                class="pointer-events-auto bg-white/90 text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hover:bg-white"
               >
                 <font-awesome-icon :icon="['fas', 'chevron-left']" />
               </button>
               <button
                 @click="manualChange(1)"
-                class="pointer-events-auto bg-white/90 text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100"
+                class="pointer-events-auto bg-white/90 text-gray-800 p-4 rounded-full shadow-xl hover:scale-110 transition-all opacity-0 group-hover:opacity-100 hover:bg-white"
               >
                 <font-awesome-icon :icon="['fas', 'chevron-right']" />
               </button>
@@ -380,7 +531,8 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted, onUnmounted } from "vue";
+import ImageCarousel from "@/components/component/ImageCarousel.vue";
 
 const amenitiesAry = [
     "空調",
@@ -392,7 +544,19 @@ const amenitiesAry = [
     "電熱水壺/瓶裝水",
     "私人浴室(浴缸/淋浴)"
   ],
-  notProvidedAry = ["加床/折疊床", "嬰兒床"];
+  notProvidedAry = ["一次性備品", "嬰兒床"],
+  addTimesAry = [
+    {
+      type: "desc",
+      title: "加床",
+      desc: ["新台幣 800/人（含棉被一條及枕頭一個）"]
+    },
+    {
+      type: "desc",
+      title: "額外備品（如枕頭及棉被）",
+      desc: ["每項新台幣 500元/個"]
+    }
+  ];
 
 const roomsData = [
   {
@@ -402,143 +566,182 @@ const roomsData = [
     specs: "",
     desc: "",
     amenities: [],
-    notProvided: [],
+    images: [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1200"
+    ]
+  },
+  {
+    id: "200",
+    shortName: "雙人房",
+    name: "雙人房",
+    specs: "1 張標準雙人床",
+    desc: "",
+    amenities: amenitiesAry,
+    notProvided: notProvidedAry,
+    addTimes: addTimesAry,
     images: [
       "https://watertailhomestay.github.io/images/illustrations/201/IMG_0063.jpg",
       "https://watertailhomestay.github.io/images/illustrations/201/IMG_0071.jpg"
     ]
   },
   {
-    id: "201",
-    shortName: "雙人房 (201)",
-    name: "雙人房 (201)",
-    specs: "1 張標準雙人床 | 最多入住 3 人",
+    id: "400",
+    shortName: "四人房",
+    name: "四人房",
+    specs: "2 張標準雙人床",
     desc: "",
     amenities: amenitiesAry,
     notProvided: notProvidedAry,
-    images: [
-      "https://watertailhomestay.github.io/images/illustrations/201/IMG_0063.jpg",
-      "https://watertailhomestay.github.io/images/illustrations/201/IMG_0071.jpg"
-    ]
-  },
-  {
-    id: "202",
-    shortName: "雙人房 (202)",
-    name: "雙人房 (202)",
-    specs: "1 張標準雙人床 | 最多入住 8 人",
-    desc: "",
-    amenities: amenitiesAry,
-    notProvided: notProvidedAry,
-    images: [
-      "https://watertailhomestay.github.io/images/illustrations/201/IMG_0063.jpg",
-      "https://watertailhomestay.github.io/images/illustrations/201/IMG_0071.jpg"
-    ]
-  },
-  {
-    id: "301",
-    shortName: "三人房 (301)",
-    name: "三人房 (301)",
-    specs: "1 張標準雙人床 | 最多入住 6 人",
-    desc: "",
-    amenities: amenitiesAry,
-    notProvided: notProvidedAry,
+    addTimes: addTimesAry,
     images: [
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0471.jpg",
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0482.jpg"
     ]
   },
   {
-    id: "302",
-    shortName: "三人房 (302)",
-    name: "三人房 (302)",
-    specs: "1 張標準雙人床 | 最多入住 6 人",
+    id: "600",
+    shortName: "六人房",
+    name: "六人房",
+    specs: "3 張標準雙人床",
     desc: "",
     amenities: amenitiesAry,
     notProvided: notProvidedAry,
+    addTimes: addTimesAry,
     images: [
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0506.jpg",
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0482.jpg"
     ]
   },
   {
-    id: "30",
-    shortName: "三人房 (303)",
-    name: "三人房 (303)",
-    specs: "1 張標準雙人床 | 最多入住 4 人",
-    desc: "",
+    id: "700",
+    shortName: "太空艙*",
+    name: "太空艙*",
+    specs: "1 張標準雙人床",
+    desc: "此房型為包場後才可加購，不單獨預定",
     amenities: amenitiesAry,
     notProvided: notProvidedAry,
+    addTimes: [],
     images: [
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0506.jpg",
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0482.jpg"
     ]
   },
   {
-    id: "bbq",
-    shortName: "烤肉區",
-    name: "戶外烤肉區",
-    specs: "需提前預約 | 場地費另計",
-    desc: "在星空下與親朋好友享受烤肉樂趣，提供完善的烤肉架與清洗設備，食材需自備。",
-    amenities: ["烤肉架", "洗手台", "夜間照明", "垃圾桶", "用餐桌椅"],
-    notProvided: ["食材", "生火工具", "烤網"],
+    id: "999",
+    shortName: "環境公共設施",
+    name: "環境公共設施",
+    specs: "",
+    desc: "",
+    content: [
+      "卡拉ＯＫ設備",
+      "麻將桌",
+      "廚房",
+      {
+        type: "desc",
+        title: "泳池",
+        desc: ["每年四月至十一月開放"]
+      },
+      {
+        type: "desc",
+        title: "烤肉區",
+        desc: [
+          "僅可使用瓦斯型烤肉架",
+          "民宿提供租用瓦斯型美式烤肉架新台幣1,500元/次"
+        ]
+      }
+    ],
+    notProvided: [],
     images: [
-      "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=800"
+      "https://watertailhomestay.github.io/images/illustrations/301/IMG_0506.jpg",
+      "https://watertailhomestay.github.io/images/illustrations/301/IMG_0482.jpg"
     ]
   }
 ];
+
 const activeRoomIndex = ref(0);
 const currentRoom = computed(() => roomsData[activeRoomIndex.value]);
-const idx1 = ref(0),
-  idx2 = ref(1);
-watch(activeRoomIndex, () => {
-  idx1.value = 0;
-  idx2.value = 1 % currentRoom.value.images.length;
+
+// --- Single Image Slideshow Logic ---
+const currentImageIndex = ref(0);
+let slideshowTimer;
+
+const currentDisplayImage = computed(() => {
+  if (currentRoom.value.images && currentRoom.value.images.length > 0) {
+    return currentRoom.value.images[currentImageIndex.value];
+  }
+  return "";
 });
 
-const scrollContainer = ref(null);
+const startSlideshow = () => {
+  stopSlideshow();
+  slideshowTimer = setInterval(() => {
+    if (currentRoom.value.images && currentRoom.value.images.length > 0) {
+      currentImageIndex.value =
+        (currentImageIndex.value + 1) % currentRoom.value.images.length;
+    }
+  }, 4000); // 4 seconds per slide
+};
 
-// 2. 滑動函式
+const stopSlideshow = () => {
+  if (slideshowTimer) clearInterval(slideshowTimer);
+};
+
+// Reset index when changing rooms
+watch(activeRoomIndex, () => {
+  currentImageIndex.value = 0;
+});
+
+onMounted(() => {
+  startSlideshow();
+});
+
+onUnmounted(() => {
+  stopSlideshow();
+});
+
+const manualChange = direction => {
+  stopSlideshow(); // Pause auto play on interaction
+  const len = currentRoom.value.images ? currentRoom.value.images.length : 0;
+  if (len === 0) return;
+
+  let newIdx = currentImageIndex.value + direction;
+  if (newIdx >= len) newIdx = 0;
+  if (newIdx < 0) newIdx = len - 1;
+
+  currentImageIndex.value = newIdx;
+  startSlideshow(); // Restart timer
+};
+
+// --- Swipe Logic ---
+let touchStartX = 0;
+const handleTouchStart = e => {
+  touchStartX = e.touches[0].clientX;
+  stopSlideshow();
+};
+
+const handleTouchEnd = e => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) manualChange(1); // Swipe Left -> Next
+    else manualChange(-1); // Swipe Right -> Prev
+  } else {
+    startSlideshow(); // Restart even if no swipe
+  }
+};
+
+// --- Tab Scrolling Logic ---
+const scrollContainer = ref(null);
 const scroll = direction => {
   if (scrollContainer.value) {
-    const scrollAmount = 200; // 每次滑動的距離 (像素)
+    const scrollAmount = 200;
     if (direction === "left") {
       scrollContainer.value.scrollLeft -= scrollAmount;
     } else {
       scrollContainer.value.scrollLeft += scrollAmount;
     }
-  }
-};
-
-let timer1, timer2, homeTimer;
-// Manual Navigation for Intro
-const manualChange = direction => {
-  clearInterval(timer1);
-  clearInterval(timer2); // Stop auto slideshow
-  const len = currentRoom.value.images.length;
-  if (len === 0) return;
-
-  // Calculate new index
-  let newIdx = idx1.value + direction;
-  if (newIdx >= len) newIdx = 0;
-  if (newIdx < 0) newIdx = len - 1;
-
-  idx1.value = newIdx;
-  idx2.value = (newIdx + 1) % len;
-};
-
-// Swipe Logic for Intro
-let touchStartX = 0;
-const handleTouchStart = e => {
-  touchStartX = e.touches[0].clientX;
-};
-const handleTouchEnd = e => {
-  const touchEndX = e.changedTouches[0].clientX;
-  const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) > 50) {
-    // Threshold 50px
-    if (diff > 0) manualChange(1);
-    // Swipe Left -> Next
-    else manualChange(-1); // Swipe Right -> Prev
   }
 };
 </script>
