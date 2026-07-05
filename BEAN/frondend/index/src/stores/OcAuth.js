@@ -32,7 +32,6 @@ export const useUserStore = defineStore('user', () => {
             */
             
             // --- 暫時模擬 (等你後端寫好 Login API 再換掉上面那段) ---
-            console.log(`正在登入: ${phone}`);
             // 假裝成功
             currentUser.value = {
                 id: 1,

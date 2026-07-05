@@ -8,7 +8,7 @@
       firstDayOfWeek: 2,
       masks: { weekdays: 'WW', title: 'YYYY-MM' }
     }"
-    :max-date="maxDate"
+    :masks="{ input: ['YYYY/MM/DD', 'YYYY-MM-DD', 'YYYYMMDD'] }"
     :min-date="minDate"
     is-required
   >
@@ -101,6 +101,5 @@ const attributes = ref([
 ]);
 
 // 日期範圍限制
-const minDate = dayjs().add(1, 'day').toDate(); // 明天
-const maxDate = dayjs().add(1, 'year').endOf('month').toDate(); // 一年後
+const minDate = dayjs().toDate(); // 明天
 </script>

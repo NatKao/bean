@@ -7,7 +7,9 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { FontAwesomeIcon } from "@/assets/libs/IconsLib.js";
 // import { FontAwesomeLayers } from "@fortawesome/vue-fontawesome";
 
-import { $msg } from '@/assets/utils/msgState' // 引入狀態控制器
+import { $user } from '@/assets/utils/userState';
+import { $room } from '@/assets/utils/roomState';
+import { $msg } from '@/assets/utils/msgState'; // 引入狀態控制器
 import baseAxios from "@/assets/plugins/base.Axios/baseAxios.js";
 
 import '@/assets/css/index.css';      // 引入 Tailwind CSS 在 Quasar 之後
@@ -23,8 +25,9 @@ import webConfig from "./config.js";
 const app = createApp(App)
 
 app.component("FontAwesomeIcon", FontAwesomeIcon);
-// app.component("FontAwesomeLayers", FontAwesomeLayers);
 
+app.provide('$user', $user);
+app.provide('$room', $room);
 app.provide('$msg', $msg);
 
 webConfig.INIT();

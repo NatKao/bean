@@ -1,7 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-
-/* 引入專案中使用的 Solid (實心) 圖示 */
 import {
   faCircleUser,
   faHouse,
@@ -10,129 +8,30 @@ import {
   faMapLocationDot,
   faCheck,
   faXmark,
-  faCircleXmark,
   faList,
-  faAngleDown,
-  faCircle,
-  faInfo,
-  faExclamation,
-  faCircleCheck,
-  faMobileScreen,
-  faEnvelope,
-  faPerson,
-  faPersonDress,
-  faChildren,
-  faCertificate,
-  
-  faBars,
-  faChevronLeft,
-  faChevronRight,
-  faWifi,
-  faCarSide,
-  faCreditCard,
-  faChevronDown,
-  faCircleExclamation,
-  faLocationDot,
-  // 新增 LoginView/ProfileView 需要的圖示
-  faMagnifyingGlass,
-  faPlus,
-  faMinus,
-  faFileExcel,
-  faDownload,
-  faPlusCircle,
-  faCalculator,
-  faCalendarXmark,
-  faPhone,
-  faCalendarDays,
-  faBed,
-  faUsers,
-  faBan,
-  faUserSlash,
-  faCircleInfo,
-  faBook
+  faAngleDown
 } from "@fortawesome/free-solid-svg-icons";
-
-/* 品牌 (Brands) 圖示 */
 import {
   faLine,
   faFacebook,
   faGoogle
 } from "@fortawesome/free-brands-svg-icons";
+// import {} from "@fortawesome/free-regular-svg-icons";
 
-/* Regular Icons (空心/線條) */
-import {
-  faIdCard,
-  faFolderOpen,
-  faCalendar,
-  faSquareCheck, // Checked box (Regular style often looks better for checkboxes)
-  faSquare,       // Unchecked box
-  faClock
-} from "@fortawesome/free-regular-svg-icons";
-
-/* 將圖示加入 Library */
+/* https://fontawesome.com/v6/search?o=r&ic=free&s=solid&ip=classic */
 library.add(
-  // Brands
   faLine,
   faFacebook,
   faGoogle,
-
-  // Solid
   faCircleUser,
   faHouse,
   faImage,
   faUser,
   faMapLocationDot,
   faCheck,
-  faXmark,
-  faCircleXmark,
-  faList,
-  faAngleDown,
-  faCircle,
-  faInfo,
-  faExclamation, 
-  faCircleCheck, 
-  faMobileScreen,
-  faEnvelope,
-  faPerson,
-  faPersonDress,
-  faChildren,
-  faCertificate,
-  
-  faBars,
-  faChevronLeft,
-  faChevronRight,
-  faWifi,
-  faCarSide,
-  faClock,
-  faCreditCard,
-  faChevronDown,
-  faCircleExclamation,
-  faLocationDot,
-  faSquareCheck,
-  // 新增 LoginView/ProfileView 需要的圖示
-  faMagnifyingGlass,
-  faPlus,
-  faMinus,
-  faFileExcel,
-  faDownload,
-  faPlusCircle,
-  faCalculator,
-  faCalendarXmark,
-  faPhone,
-  faCalendarDays,
-  faBed,
-  faUsers,
-  faBan,
-  faUserSlash,
-  faCircleInfo,
-  faBook,
-  
-  faIdCard,
-  faFolderOpen,
-  faCalendar
-);
+  faXmark,faList,faAngleDown);
 
-export { FontAwesomeIcon };
+export default FontAwesomeIcon;
 
 /**
  * <font-awesome-icon :icon="['fab', 'line']" />
@@ -179,8 +78,6 @@ export { FontAwesomeIcon };
  * Regular
  * <FontAwesomeIcon icon={faInfo} />
  * <font-awesome-icon :icon="['fas', 'info']" />
- * 
- * <font-awesome-icon :icon="['fas', 'circle']" />
  * 
  * Warning Alert 
  * color-warning-50 dark:color-warning-500/15 #fffaeb

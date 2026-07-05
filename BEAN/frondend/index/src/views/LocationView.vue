@@ -1,3 +1,11 @@
+<!-- 
+  File Name: LocationView.vue
+  Author: huanyao
+  Created Date: 2025-12-07
+  Description: 
+    此元件用於顯示地理交通位置。
+  Reviewed Date: 2026-01-10 huanyao
+-->
 <template>
   <section
     class="max-w-7xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"

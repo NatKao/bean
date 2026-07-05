@@ -95,49 +95,35 @@
 <script setup>
 import { ref, inject, onMounted, onUnmounted } from "vue";
 import ImageCarousel from "@/components/component/ImageCarousel.vue";
-import axios from "axios";
 
 // 搬移原本 Home 相關的變數
 const currentHomeSlide = ref(0);
-const homeGallery = [
+const homeGallery = ref([
   "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1600",
   "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=1600"
-];
+]);
 
-const $msg = inject("$msg");
-const $baseAxios = inject("$baseAxios");
-const message = ref("等待數據...");
-// 搬移 API 邏輯
-const fetchData = async () => {
-  try {
-    const response2 = await $baseAxios.get("/users");
-    console.log(response2);
-    message.value = response2;
-  } catch (error) {
-    $msg.notify.error("發生錯誤");
-    message.value = "連線失敗";
-  }
-};
+const $room = inject("$room");
 
-const fetchData2 = async () => {
-  const isOk = await $msg.confirm("刪除確認", "確定要刪除嗎？");
-};
-const fetchData3 = async () => {
-  await $msg.alert.success("註冊成功", "歡迎加入我們！請去信箱收取驗證信。");
-};
+onMounted(() => {
+  startHomeSlideshow();
+  $room.getRoom();
+});
 
 // 搬移 Slideshow 邏輯
 let homeTimer;
 const startHomeSlideshow = () => {
+  const imageModules = import.meta.glob('@/assets/images/img_home_*.{jpg,jpeg,png,webp}', { 
+    eager: true, 
+    import: 'default' 
+  });
+  homeGallery.value = [];
+  homeGallery.value = Object.values(imageModules);
   clearInterval(homeTimer);
   homeTimer = setInterval(() => {
     currentHomeSlide.value = (currentHomeSlide.value + 1) % homeGallery.length;
   }, 3000);
 };
-
-onMounted(() => {
-  startHomeSlideshow();
-});
 
 onUnmounted(() => {
   clearInterval(homeTimer); // 離開頁面要記得清除 Timer
@@ -148,6 +134,7 @@ const handleHomeTouchStart = e => {
   homeTouchStartX = e.touches[0].clientX;
   clearInterval(homeTimer); // Stop auto play on interact
 };
+
 const handleHomeTouchEnd = e => {
   const touchEndX = e.changedTouches[0].clientX;
   const diff = homeTouchStartX - touchEndX;

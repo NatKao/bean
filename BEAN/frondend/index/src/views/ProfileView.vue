@@ -1,11 +1,19 @@
+<!-- 
+  File Name: LocationView.vue
+  Author: huanyao
+  Created Date: 2025-12-21
+  Description: 
+    此元件用於顯示地理交通位置。
+  Reviewed Date: 2026-01-？？ huanyao
+-->
 <template>
   <section
-    class="max-w-6xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"
+    class="max-w-[calc(100vw-1rem)] md:max-w-[calc(100vw-6rem)] xl:max-w-6xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"
   >
     <div class="min-h-screen bg-gray-50 flex flex-col">
       <!-- Top Navigation Tabs (Centered) -->
-      <div class="bg-white shadow-sm z-10">
-        <div class="max-w-7xl mx-auto px-4">
+      <div v-show="tabs.length > 1" class="bg-white shadow-sm z-10" >
+        <div class="max-w-[calc(100vw-1rem)] md:max-w-[calc(100vw-6rem)] xl:max-w-7xl xl:mx-auto px-4">
           <div class="flex justify-center space-x-8 h-16 items-center">
             <button
               v-for="tab in tabs"
@@ -26,7 +34,7 @@
       </div>
 
       <!-- Main Content -->
-      <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+      <main class="flex-grow max-w-[calc(100vw-1rem)] md:max-w-7xl xl:mx-auto w-full">
         <!-- TAB 1: 查詢訂單 -->
         <div v-if="currentTab === 'query'" class="space-y-6">
           <!-- Search & Actions Bar -->
@@ -35,7 +43,7 @@
           >
             <!-- Left: Search Inputs -->
             <div
-              class="flex flex-col md:flex-row gap-3 w-full md:w-auto items-center overflow-x-auto md:overflow-visible"
+              class="flex flex-col xl:flex-row gap-3 w-full md:w-auto items-center overflow-x-auto md:overflow-visible"
             >
               <div
                 class="flex items-center bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex-shrink-0"
@@ -47,7 +55,7 @@
                   id="startDate"
                   type="date"
                   v-model="searchFilters.startDate"
-                  class="bg-transparent text-sm outline-none w-32 text-gray-600"
+                  class="bg-transparent text-sm outline-none xl:w-32 text-gray-600"
                 />
                 <!-- <InputDate
                   :modelValue="searchFilters.startDate"
@@ -59,7 +67,7 @@
                   id="endDate"
                   type="date"
                   v-model="searchFilters.endDate"
-                  class="bg-transparent text-sm outline-none w-32 text-gray-600"
+                  class="bg-transparent text-sm outline-none xl:w-32 text-gray-600"
                 />
               </div>
               <div class="relative w-full md:w-auto min-w-[200px]">
@@ -110,21 +118,23 @@
                 </label>
               </div>
 
-              <button
-                @click="handleSearch"
-                class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-opacity-90 transition-colors shadow-sm whitespace-nowrap flex-shrink-0"
-              >
-                查詢
-              </button>
-            </div>
+              <div class="flex items-center gap-4 px-2 flex-shrink-0">
+                <button
+                  @click="handleSearch"
+                  class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-opacity-90 transition-colors shadow-sm whitespace-nowrap flex-shrink-0"
+                >
+                  查詢
+                </button>
 
-            <!-- Right: Add Button -->
-            <button
-              @click="openAddModal"
-              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap flex-shrink-0"
-            >
-              <font-awesome-icon :icon="['fas', 'plus']" /> 新增訂單
-            </button>
+                <!-- Right: Add Button -->
+                <button
+                  @click="openAddModal"
+                  class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap flex-shrink-0"
+                >
+                  <font-awesome-icon :icon="['fas', 'plus']" /> 新增訂單
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Orders List (Text-Only Horizontal Cards) -->
@@ -167,9 +177,20 @@
                         {{ getStstusText(order.status) }}
                       </span>
                     </div>
-                    <p class="text-lg font-bold text-gray-800 font-mono">{{
-                      order.bill_no
-                    }}</p>
+                    <div class="flex justify-between md:block">
+                      <p class="text-lg font-bold text-gray-800 font-mono">{{
+                        order.bill_no
+                      }}</p>
+                      <button
+                        v-show="order.history.length > 0"
+                        @click="handleHistory(order.history)"
+                        class="lg:flex-none px-2 py-1 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 text-xs font-medium transition-colors flex items-center justify-center gap-2 whitespace-nowrap shadow-sm bg-white"
+                      >
+                        <font-awesome-icon :icon="['fas', 'book']" />歷史訂單({{
+                          order.history.length
+                        }})
+                      </button>
+                    </div>
                   </div>
                   <!-- 2. Guest Info -->
                   <div class="min-w-[160px]">
@@ -180,7 +201,7 @@
                       </span>
                       {{ order.name }}</h3
                     >
-                    <div class="flex flex-col text-sm text-gray-500">
+                    <div class="flex text-sm text-gray-500 gap-2 md:block md:flex-col ">
                       <span
                         v-if="order.line_id"
                         class="flex items-center text-green-600 mt-0.5"
@@ -203,7 +224,7 @@
                   <!-- 3. Date Info -->
                   <div class="min-w-[180px]">
                     <p class="text-xs text-gray-400 mb-1">入住 / 退房</p>
-                    <div class="space-y-1 text-sm">
+                    <div class="text-sm flex gap-2 md:block md:space-y-1">
                       <p class="flex items-center font-medium text-gray-700">
                         <font-awesome-icon
                           :icon="['fas', 'calendar-days']"
@@ -224,8 +245,8 @@
                   <!-- 4. Room Info -->
                   <div>
                     <p class="text-xs text-gray-400 mb-1">房型與人數</p>
-                    <div class="text-sm text-gray-700">
-                      <div class="flex items-center mb-1">
+                    <div class="text-sm text-sm flex gap-2 md:block">
+                      <div class="flex items-center md:mb-1">
                         <span
                           v-if="order.is_charter"
                           class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 text-[14px] font-bold rounded"
@@ -236,7 +257,7 @@
                             :icon="['fas', 'bed']"
                             class="w-3 h-3 mr-1.5 text-gray-400"
                           />
-                          <span class="font-bold mr-1">{{
+                          <span class="font-bold md:mr-1">{{
                             order.house_count
                           }}</span>
                           房
@@ -271,33 +292,31 @@
                 </div>
                 <div
                   v-show="order.refund_remark"
-                  class="w-full bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-start text-sm text-gray-600 mt-auto"
+                  class="w-full bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col text-sm text-gray-600 mt-auto"
                 >
-                  <div
-                    class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'circle-info']"
-                      class="text-xs"
-                    />
-                    退訂日期:
-                  </div>
-                  <span>{{
-                    dayjs(order.refund_date).format("YYYY/MM/DD")
-                  }}</span>
-                  <div
-                    class="font-bold text-gray-500 mr-2 ml-2 flex-shrink-0 flex items-center gap-1"
-                  >
-                    退訂金額:
-                  </div>
-                  <span>{{ order.refund_amount }}</span>
+                  <div class="flex items-center flex-wrap gap-y-1">
+                    <div class="flex items-center mr-4">
+                      <div class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1">
+                        <font-awesome-icon :icon="['fas', 'circle-info']" class="text-xs" />
+                        退訂日期:
+                      </div>
+                      <span>{{ dayjs(order.refund_date).format("YYYY/MM/DD") }}</span>
+                    </div>
 
-                  <div
-                    class="font-bold text-gray-500 mr-2 ml-2 flex-shrink-0 flex items-center gap-1"
-                  >
-                    退訂留言:
+                    <div class="flex items-center">
+                      <div class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1">
+                        退訂金額:
+                      </div>
+                      <span>{{ order.refund_amount }}</span>
+                    </div>
                   </div>
-                  <span>{{ order.refund_remark }}</span>
+
+                  <div class="flex items-start mt-2">
+                    <div class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1">
+                      退訂留言:
+                    </div>
+                    <span class="break-all whitespace-pre-wrap">{{ order.refund_remark }}</span>
+                  </div>
                 </div>
               </div>
 
@@ -337,7 +356,7 @@
           class="flex justify-center items-start pt-10"
         >
           <div
-            class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 w-full max-w-md"
+            class="bg-white p-8 mr-2 rounded-2xl shadow-lg border border-gray-100 w-full max-w-md"
           >
             <div class="text-center mb-6">
               <div
@@ -371,7 +390,49 @@
                 />
               </div>
               <button
-                @click="handleExport"
+                @click="handleExport(1)"
+                class="w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-transform hover:scale-[1.02] shadow-md mt-4 flex justify-center items-center gap-2"
+              >
+                <font-awesome-icon :icon="['fas', 'download']" /> 匯出 Excel
+              </button>
+            </div>
+          </div>
+          <div
+            class="bg-white p-8  rounded-2xl shadow-lg border border-gray-100 w-full max-w-md"
+          >
+            <div class="text-center mb-6">
+              <div
+                class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 text-2xl"
+              >
+                <font-awesome-icon :icon="['fas', 'file-excel']" />
+              </div>
+              <h2 class="text-2xl font-bold text-gray-800">匯出Log</h2>
+              <p class="text-gray-500 text-sm mt-2">請選擇欲匯出的日期區間</p>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >開始日期</label
+                >
+                <input
+                  type="date"
+                  v-model="exportForm.startDate"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >結束日期</label
+                >
+                <input
+                  type="date"
+                  v-model="exportForm.endDate"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                />
+              </div>
+              <button
+                @click="handleExport(2)"
                 class="w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-transform hover:scale-[1.02] shadow-md mt-4 flex justify-center items-center gap-2"
               >
                 <font-awesome-icon :icon="['fas', 'download']" /> 匯出 Excel
@@ -380,6 +441,207 @@
           </div>
         </div>
       </main>
+
+      <!-- -->
+
+      <div
+        v-if="showHistoryModal"
+        class="fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+        >
+          <!-- Background overlay -->
+          <div
+            class="fixed inset-0 bg-gray-500/60 transition-opacity"
+            @click="showHistoryModal = false"
+          ></div>
+
+          <!-- Modal panel -->
+          <span
+            class="hidden sm:inline-block sm:align-middle sm:h-screen"
+            aria-hidden="true"
+            >&#8203;</span
+          >
+          <div
+            class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl w-full relative z-50"
+          >
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <h3
+                class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'book']"
+                  class="text-gray-600"
+                />
+                歷史訂單
+              </h3>
+              <div
+                v-for="history in historyForm"
+                :key="history.bill_no"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col lg:flex-row gap-6 items-start hover:shadow-md transition-shadow group"
+              >
+                <!-- Content Group -->
+                <div class="flex-grow flex flex-col gap-4 w-full">
+                  <!-- Information Grid -->
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
+                  >
+                    <!-- 1. ID & Status -->
+                    <div class="min-w-[140px]">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="text-xs text-gray-400 uppercase tracking-wider"
+                          >訂單編號</span
+                        >
+                        <span
+                          :class="getStatusClass(history.status)"
+                          class="px-2 py-0.5 rounded text-[10px] font-bold"
+                        >
+                          {{ getStstusText(history.status) }}
+                        </span>
+                      </div>
+                      <p class="text-lg font-bold text-gray-800 font-mono">{{
+                        history.bill_no
+                      }}</p>
+                    </div>
+                    <!-- 2. Guest Info -->
+                    <div class="min-w-[160px]">
+                      <p class="text-xs text-gray-400 mb-1"> 訂房人資訊 </p>
+                      <h3 class="font-bold text-gray-900 text-base">
+                        <span v-if="history.is_block && history.is_block === 'Y'">
+                          <font-awesome-icon :icon="['fas', 'user-slash']" />
+                        </span>
+                        {{ history.name }}</h3
+                      >
+                      <div class="flex flex-col text-sm text-gray-500">
+                        <span
+                          v-if="history.line_id"
+                          class="flex items-center text-green-600 mt-0.5"
+                          ><font-awesome-icon
+                            :icon="['fab', 'line']"
+                            class="w-3 h-3 mr-1.5"
+                          />
+                          {{ history.line_id }}</span
+                        >
+                        <span class="flex items-center"
+                          ><font-awesome-icon
+                            :icon="['fas', 'phone']"
+                            class="w-3 h-3 mr-1.5 text-gray-400"
+                          />
+                          {{ "0" + history.tel }}</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- 3. Date Info -->
+                    <div class="min-w-[180px]">
+                      <p class="text-xs text-gray-400 mb-1">入住 / 退房</p>
+                      <div class="space-y-1 text-sm">
+                        <p class="flex items-center font-medium text-gray-700">
+                          <font-awesome-icon
+                            :icon="['fas', 'calendar-days']"
+                            class="w-3 h-3 mr-1.5 text-indigo-500"
+                          />
+                          {{ dayjs(history.checkin_date).format("YYYY/MM/DD") }}
+                        </p>
+                        <p class="flex items-center text-gray-500">
+                          <font-awesome-icon
+                            :icon="['fas', 'calendar-days']"
+                            class="w-3 h-3 mr-1.5 text-gray-300"
+                          />
+                          {{ dayjs(history.checkout_date).format("YYYY/MM/DD") }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- 4. Room Info -->
+                    <div>
+                      <p class="text-xs text-gray-400 mb-1">房型與人數</p>
+                      <div class="text-sm text-gray-700">
+                        <div class="flex items-center mb-1">
+                          <span
+                            v-if="history.is_charter"
+                            class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 text-[14px] font-bold rounded"
+                            >包場</span
+                          >
+                          <template v-else>
+                            <font-awesome-icon
+                              :icon="['fas', 'bed']"
+                              class="w-3 h-3 mr-1.5 text-gray-400"
+                            />
+                            <span class="font-bold mr-1">{{
+                              history.house_count
+                            }}</span>
+                            房
+                          </template>
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                          <font-awesome-icon
+                            :icon="['fas', 'users']"
+                            class="w-3 h-3 mr-1.5 text-gray-400"
+                          />
+                          <span>{{ history.adults }} 大 {{ history.kids }} 小</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Remarks (New Section) -->
+                  <div
+                    v-show="history.remark"
+                    class="w-full bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-start text-sm text-gray-600 mt-auto"
+                  >
+                    <div
+                      class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'circle-info']"
+                        class="text-xs"
+                      />
+                      備註:
+                    </div>
+                    <span>{{ history.remark }}</span>
+                  </div>
+                  <div
+                    v-show="history.refund_remark"
+                    class="w-full bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-start text-sm text-gray-600 mt-auto"
+                  >
+                    <div
+                      class="font-bold text-gray-500 mr-2 flex-shrink-0 flex items-center gap-1"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'circle-info']"
+                        class="text-xs"
+                      />
+                      退訂日期:
+                    </div>
+                    <span>{{
+                      dayjs(history.refund_date).format("YYYY/MM/DD")
+                    }}</span>
+                    <div
+                      class="font-bold text-gray-500 mr-2 ml-2 flex-shrink-0 flex items-center gap-1"
+                    >
+                      退訂金額:
+                    </div>
+                    <span>{{ history.refund_amount }}</span>
+
+                    <div
+                      class="font-bold text-gray-500 mr-2 ml-2 flex-shrink-0 flex items-center gap-1"
+                    >
+                      退訂留言:
+                    </div>
+                    <span>{{ history.refund_remark }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Popup: Add Order (新增訂單) -->
       <div
@@ -691,10 +953,10 @@
               >
                 <font-awesome-icon :icon="['fas', 'calendar-xmark']" /> 執行退訂
               </h3>
-              <p class="text-sm text-gray-500 mb-6"
-                >訂單編號: {{ selectedOrder.bill_no }} -
-                {{ selectedOrder.name }}</p
-              >
+              <p class="text-sm text-gray-500 mb-6">
+                訂單編號: {{ selectedOrder.bill_no }} -
+                {{ selectedOrder.name }}
+              </p>
 
               <div class="space-y-4">
                 <div>
@@ -777,11 +1039,12 @@
                   </div>
                   <p class="text-xs text-red-500 mt-1"
                     >* 系統已依比例
-                    {{ '(' + cancelForm.refund_rate * 100 + '%)' }}
+                    {{ "(" + cancelForm.refund_rate * 100 + "%)" }}
                     計算
-                    </p
-                  >
-                  
+                  </p>
+                  <p v-show="showDateEmptyText" class="text-xs text-red-500 mt-1">
+                    * 退訂日期未填寫，已由系統給予預設值(今日)
+                  </p>
                 </div>
               </div>
             </div>
@@ -812,17 +1075,14 @@ import { ref, reactive, inject, computed } from "vue";
 import InputDate from "@/components/component/InputDate.vue";
 import dayjs from "dayjs";
 
-// dayjs.extend(isBetween)
-
-const GAS_URL =
-  "https://script.google.com/macros/s/AKfycbxHmyWAzLRqm6NBDzBte9v4BaA-06FYiJ0WrVtHnOE8NRrAe3kmSn713t1wYrlfLy8Q/exec";
+const GAS_URL = import.meta.env.VITE_GAS_URL;
 const $msg = inject("$msg");
 
 // --- State ---
 const currentTab = ref("query");
 const tabs = [
   { id: "query", name: "查詢訂單", icon: ["fas", "magnifying-glass"] },
-  { id: "export", name: "輸出 Excel", icon: ["fas", "file-excel"] }
+  //{ id: "export", name: "輸出 Excel", icon: ["fas", "file-excel"] }
 ];
 
 const getStstusText = status => {
@@ -844,7 +1104,7 @@ const searchFilters = reactive({
 const handleSearch = async () => {
   try {
     // 關鍵技巧：用 text/plain 騙過瀏覽器的 CORS 預檢
-    console.log(searchFilters);
+    $msg.showLoading();
     const params = new URLSearchParams({
       action: "filter",
       ...searchFilters
@@ -856,14 +1116,11 @@ const handleSearch = async () => {
       headers: { "Content-Type": "text/plain" }
     });
     const res = await response.json();
-    console.log(res);
-
+    $msg.hideLoading();
     if (res.status === "success") {
       $msg.notify.success("查詢成功！");
       orders.value = res.data;
       showAddModal.value = false;
-      // 這裡可以再呼叫一次讀取 API 來更新列表
-      // fetchOrders();
       return;
     }
     $msg.notify.error("查詢失敗", res.msg);
@@ -877,6 +1134,13 @@ const getStatusClass = status => {
   if (status === "F") return "bg-blue-100 text-blue-800";
   if (status === "D") return "bg-gray-100 text-gray-800";
   return "bg-green-100 text-green-800";
+};
+
+const showHistoryModal = ref(false);
+const historyForm = ref([]);
+const handleHistory = historyAry => {
+  showHistoryModal.value = true;
+  historyForm.value = historyAry;
 };
 
 // --- Add Order Logic ---
@@ -937,6 +1201,7 @@ const submitAddOrder = async () => {
 
   try {
     // 關鍵技巧：用 text/plain 騙過瀏覽器的 CORS 預檢
+    $msg.showLoading();
     const response = await fetch(GAS_URL, {
       method: "POST",
       headers: {
@@ -949,18 +1214,18 @@ const submitAddOrder = async () => {
       }) // 把物件轉成字串傳送
     });
     const res = await response.json();
-    console.log(res);
-
+    $msg.hideLoading();
     if (res.status === "success") {
       $msg.notify.success("訂單建立成功！");
       showAddModal.value = false;
       // 這裡可以再呼叫一次讀取 API 來更新列表
-      // fetchOrders();
+      handleSearch();
       return;
     }
     $msg.notify.error("寫入失敗", res.msg);
   } catch (err) {
     console.error(err);
+    $msg.hideLoading();
     $msg.notify.error("讀取失敗", "無法連線到DB");
   }
 };
@@ -990,13 +1255,23 @@ const openCancelModal = order => {
   cancelForm.refund_remark = "";
   cancelForm.calculated = false;
   cancelForm.status = "D";
+  showDateEmptyText.value = false;
   showCancelModal.value = true;
 };
 
+const showDateEmptyText = ref(false);
 const calculateRefund = () => {
+  if (!cancelForm.price) {
+    $msg.alert.error("請輸入已付金額！！！");
+    return;
+  }
+  let text = "";
+  if (!cancelForm.refund_date) {
+    setCancelDate(dayjs().toDate());
+    showDateEmptyText.value = true;
+  }
   const date1 = dayjs(selectedOrder.value.checkin_date);
   const days = date1.diff(cancelForm.refund_date, "day", true);
-  console.log(days);
   /*
 旅客住宿日當日取消訂房扣預付訂金金額 100%
 旅客於住宿日前 1 日內取消訂房扣房價預付訂金金額 80%
@@ -1027,7 +1302,12 @@ const calculateRefund = () => {
 };
 
 const confirmCancel = async () => {
+  const isOk = await $msg.confirm("確定執行退訂作業嗎？");
+  if (!isOk) {
+    return;
+  }
   try {
+    $msg.showLoading();
     const response = await fetch(GAS_URL, {
       method: "POST",
       headers: {
@@ -1039,15 +1319,16 @@ const confirmCancel = async () => {
       }) // 把物件轉成字串傳送
     });
     const res = await response.json();
-    console.log(res);
-
+    $msg.hideLoading();
     if (res.status === "success") {
       showCancelModal.value = false;
-      $msg.alert.success(
-        `訂單 ${selectedOrder.value.bill_no} 已退訂，退款金額: ${cancelForm.refund_amount}`
-      );
+      let text = `訂單 ${selectedOrder.value.bill_no} 已退訂，需付退款金額: ${cancelForm.refund_amount}`;
+      if (cancelForm.refund_amount === 0) {
+        text = `訂單 ${selectedOrder.value.bill_no} 已退訂`;
+      }
+      $msg.alert.success(text);
       // 這裡可以再呼叫一次讀取 API 來更新列表
-      // fetchOrders();
+      handleSearch();
       return;
     }
     $msg.notify.error("寫入失敗", res.msg);
@@ -1059,78 +1340,115 @@ const confirmCancel = async () => {
 
 const handleFinish = async order => {
   const isOk = await $msg.confirm(
-    `要將 ${order.name} (${order.tel}) 完成訂單了嗎？`
+    `要將 ${order.name} (${order.line_id}/0${order.tel}) 完成訂單了嗎？`
   );
-  if (isOk) {
-    try {
-      const response = await fetch(GAS_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          action: "updateFinish",
-          ...order
-        }) // 把物件轉成字串傳送
-      });
-      const res = await response.json();
-      console.log(res);
-
-      if (res.status === "success") {
-        $msg.alert.success("已完成該筆訂單");
-        // 這裡可以再呼叫一次讀取 API 來更新列表
-        // fetchOrders();
-        return;
-      }
-      $msg.notify.error("寫入失敗", res.msg);
-    } catch (err) {
-      console.error(err);
-      $msg.notify.error("讀取失敗", "無法連線到DB");
+  if (!isOk) {
+    return;
+  }
+  try {
+    $msg.showLoading();
+    const response = await fetch(GAS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateFinish",
+        ...order
+      }) // 把物件轉成字串傳送
+    });
+    const res = await response.json();
+    $msg.hideLoading();
+    if (res.status === "success") {
+      $msg.alert.success("已完成該筆訂單");
+      // 這裡可以再呼叫一次讀取 API 來更新列表
+      handleSearch();
+      return;
     }
+    $msg.notify.error("寫入失敗", res.msg);
+  } catch (err) {
+    console.error(err);
+    $msg.notify.error("讀取失敗", "無法連線到DB");
   }
 };
 
 // --- Blacklist Logic ---
 const handleBlacklist = async order => {
   const isOk = await $msg.confirm(
-    `確定將 ${order.name} (${order.tel}) 加入黑名單嗎？`
+    `確定將 ${order.name} (${order.line_id}/0${order.tel}) 加入黑名單嗎？`
   );
-  if (isOk) {
-    try {
-      const response = await fetch(GAS_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          action: "updateBlocker",
-          ...order
-        }) // 把物件轉成字串傳送
-      });
-      const res = await response.json();
-      console.log(res);
-
-      if (res.status === "success") {
-        $msg.alert.success("已加入黑名單");
-        // 這裡可以再呼叫一次讀取 API 來更新列表
-        // fetchOrders();
-        return;
-      }
-      $msg.notify.error("寫入失敗", res.msg);
-    } catch (err) {
-      console.error(err);
-      $msg.notify.error("讀取失敗", "無法連線到DB");
+  if (!isOk) {
+    return;
+  }
+  try {
+    $msg.showLoading();
+    const response = await fetch(GAS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateBlocker",
+        ...order
+      }) // 把物件轉成字串傳送
+    });
+    const res = await response.json();
+    $msg.hideLoading();
+    if (res.status === "success") {
+      $msg.alert.success("已加入黑名單");
+      // 這裡可以再呼叫一次讀取 API 來更新列表
+      handleSearch();
+      return;
     }
+    $msg.notify.error("寫入失敗", res.msg);
+  } catch (err) {
+    console.error(err);
+    $msg.notify.error("讀取失敗", "無法連線到DB");
   }
 };
 
 // --- Export Logic ---
 const exportForm = reactive({ startDate: "", endDate: "" });
-const handleExport = () => {
+const handleExport = async (type) => {
   if (!exportForm.startDate || !exportForm.endDate)
     return alert("請選擇日期範圍");
-  console.log("Exporting...", exportForm);
-  alert(`匯出 Excel: ${exportForm.startDate} 至 ${exportForm.endDate}`);
+
+  let csv = type === 1 ? "\n" : "\n";
+
+
+  try {
+    // 關鍵技巧：用 text/plain 騙過瀏覽器的 CORS 預檢
+    $msg.showLoading();
+    const params = new URLSearchParams({
+      action: "download" + tpye,
+      ...searchFilters
+    });
+    const urlWithParams = `${GAS_URL}?${params.toString()}`;
+    const response = await fetch(urlWithParams, {
+      method: "GET",
+      redirect: "follow",
+      headers: { "Content-Type": "text/plain" }
+    });
+    const res = await response.json();
+    $msg.hideLoading();
+    if (res.status === "success") {
+      $msg.notify.success("查詢資料成功！");
+      orders.value = res.data;
+
+      const anchor = document.createElement("a");
+      anchor.href = "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURIComponent(csv);
+      anchor.target = "_blank";
+      anchor.download = "" + dayjs.format("YYYY_MM_DD") + ".csv";
+      anchor.click();
+
+      anchor.remove();
+      return;
+    }
+    $msg.notify.error("查詢資料失敗", res.msg);
+  } catch (err) {
+    console.error(err);
+    $msg.notify.error("讀取失敗", "無法連線到DB");
+  }
 };
 </script>
 

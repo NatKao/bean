@@ -6,7 +6,6 @@ const RulesView = () => import("@/views/RulesView.vue");
 const LocationView = () => import("@/views/LocationView.vue");
 const LoginView = () => import("@/views/LoginView.vue");
 const ProfileView = () => import("@/views/ProfileView.vue");
-const HistoryView = () => import("@/views/HistoryView.vue");
 const EmptyroomView = () => import("@/views/EmptyroomView.vue");
 
 const routes = [
@@ -20,15 +19,16 @@ const routes = [
       { path: "/location", name: "location", component: LocationView },
       { path: "/emptyroom", name: "emptyroom", component: EmptyroomView },
       { path: "/beanWorld", name: "beanWorld", component: LoginView },
-      { path: "/profile", name: "profile", component: ProfileView },
-      { path: "/history", name: "history", component: HistoryView }
+      { path: "/profile", 
+        name: "profile", 
+        component: ProfileView,
+        meta: { requiresAuth: true } 
+      }
     ]
   },
-
-  // 沒有符合的都來這
   {
-    path: "/:catchAll(.*)",
-    redirect: "/index"
+    path: "/:pathMatch(.*)*",
+    redirect: "/"
   }
 ];
 

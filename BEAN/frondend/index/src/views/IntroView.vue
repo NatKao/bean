@@ -531,7 +531,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, onUnmounted } from "vue";
+import { ref, reactive, watch, computed, onMounted, onUnmounted } from "vue";
 import ImageCarousel from "@/components/component/ImageCarousel.vue";
 
 const amenitiesAry = [
@@ -558,7 +558,7 @@ const amenitiesAry = [
     }
   ];
 
-const roomsData = [
+const roomsData = reactive([
   {
     id: "100",
     shortName: "關於水尾",
@@ -658,10 +658,65 @@ const roomsData = [
       "https://watertailhomestay.github.io/images/illustrations/301/IMG_0482.jpg"
     ]
   }
-];
+]);
 
 const activeRoomIndex = ref(0);
 const currentRoom = computed(() => roomsData[activeRoomIndex.value]);
+
+onMounted(() => {
+  loadImages();
+  startSlideshow();
+});
+
+const loadImages = () => {
+  // 關於水尾
+  const imgModules0 = import.meta.glob("@/assets/images/img_about_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[0].images = [];
+  roomsData[0].images = Object.values(imgModules0);
+  // 兩人房
+  const imgModules1 = import.meta.glob("@/assets/images/img_room2_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[1].images = [];
+  roomsData[1].images = Object.values(imgModules1);
+  // 四人房
+  const imgModules2 = import.meta.glob("@/assets/images/img_room4_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[2].images = [];
+  roomsData[2].images = Object.values(imgModules2);
+  // 六人房
+  const imgModules3 = import.meta.glob("@/assets/images/img_room6_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[3].images = [];
+  roomsData[3].images = Object.values(imgModules3);
+  // 太空艙
+  const imgModules4 = import.meta.glob("@/assets/images/img_sroom_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[4].images = [];
+  roomsData[4].images = Object.values(imgModules4);
+  // 公共環境
+  const imgModules5 = import.meta.glob("@/assets/images/img_public_*.{jpg,jpeg,png,webp}", { 
+    eager: true, 
+    import: 'default' 
+  });
+  roomsData[5].images = [];
+  roomsData[5].images = Object.values(imgModules5);
+};
+
+
+onUnmounted(() => {
+  stopSlideshow();
+});
 
 // --- Single Image Slideshow Logic ---
 const currentImageIndex = ref(0);
@@ -691,14 +746,6 @@ const stopSlideshow = () => {
 // Reset index when changing rooms
 watch(activeRoomIndex, () => {
   currentImageIndex.value = 0;
-});
-
-onMounted(() => {
-  startSlideshow();
-});
-
-onUnmounted(() => {
-  stopSlideshow();
 });
 
 const manualChange = direction => {

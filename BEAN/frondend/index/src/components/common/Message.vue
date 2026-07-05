@@ -1,21 +1,29 @@
 <template>
   <div class="global-ui-container">
-    <div 
-      v-if="state.isLoading" 
+    <div
+      v-if="state.isLoading"
       class="fixed inset-0 z-[9999] bg-gray-50/80 backdrop-blur-[1px] flex flex-col items-center justify-center cursor-wait"
       @click.stop.prevent
     >
-      <div class="relative flex items-center justify-center">
-        <div class="absolute w-20 h-20 bg-primary/20 rounded-full animate-ping"></div>
-        <div class="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+      <div
+        class="relative w-full max-w-[300px] transform overflow-hidden rounded-3xl bg-white p-6 text-left shadow-xl transition-all dark:bg-gray-900 lg:p-10 scale-100"
+      >
+        <div class="text-center">
+          <div class="relative flex items-center justify-center z-1 mb-7">
+            <div
+              class="absolute w-20 h-20 bg-primary/20 rounded-full animate-ping"
+            ></div>
+            <div
+              class="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin"
+            ></div>
+          </div>
+          <div class="mt-6 text-gray-600 font-bold tracking-widest animate-pulse">
+            處理中...
+          </div>
+          <div class="mt-2 text-xs text-gray-400"> 請勿關閉視窗 </div>
+        </div>
       </div>
-      
-      <div class="mt-6 text-gray-600 font-bold tracking-widest animate-pulse">
-        處理中...
-      </div>
-      <div class="mt-2 text-xs text-gray-400">
-        請勿關閉視窗
-      </div>
+
     </div>
 
     <div
@@ -75,9 +83,36 @@
       <div
         class="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm transform transition-all scale-100"
       >
-        <h3 class="text-xl font-bold text-gray-800 mb-2">{{
-          state.confirm.title
-        }}</h3>
+
+          <div class="relative flex items-center justify-center z-1 mb-7">
+            <font-awesome-icon
+              :icon="['fas', 'certificate']"
+              class="opacity-15"
+              :class="currentConfirmVariant.bgTextClass"
+              style="width: 90px; height: 90px"
+            />
+            <span
+              class="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
+            >
+              <svg
+                :class="currentConfirmVariant.fillClass"
+                height="38"
+                width="38"
+                viewBox="0 0 38 38"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  fill-rule="evenodd"
+                  fill="currentColor"
+                  :d="currentConfirmVariant.svgPath"
+                ></path>
+              </svg>
+            </span>
+          </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">
+          {{ state.confirm.title }}</h3
+        >
         <p class="text-gray-600 mb-6 leading-relaxed">{{
           state.confirm.message
         }}</p>
@@ -216,6 +251,10 @@ const variantClasses = {
   }
 };
 
+const currentConfirmVariant = computed(() => {
+  const variant = state.confirm.type || "info";
+  return alertVariants[variant];
+});
 // --- Alert Logic ---
 const closeAlert = () => {
   $msg._closeAlert();

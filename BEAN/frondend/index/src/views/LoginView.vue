@@ -1,3 +1,11 @@
+<!-- 
+  File Name: LocationView.vue
+  Author: huanyao
+  Created Date: 2025-12-21
+  Description: 
+    此元件用於顯示登入畫面。
+  Reviewed Date: 2026-01-10 huanyao
+-->
 <template>
   <section
     class="max-w-md mx-auto w-full p-4 flex items-center justify-center min-h-[calc(100vh-11rem)]"
@@ -29,16 +37,14 @@
 <script setup>
 import { ref, inject, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/OcAuth.js";
 
-const $msg = inject('$msg')
-const userStore = useUserStore(); // 實際要用的
+const $msg = inject('$msg');
+const $user = inject("$user");
 const router = useRouter();
 
 const loginForm = ref({ password: "" });
 const loginError = ref("");
-
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxHmyWAzLRqm6NBDzBte9v4BaA-06FYiJ0WrVtHnOE8NRrAe3kmSn713t1wYrlfLy8Q/exec";
+const GAS_URL = import.meta.env.VITE_GAS_URL;
 
 const handleLogin = async () => {
   const loginData = {
@@ -51,11 +57,15 @@ const handleLogin = async () => {
       method: "POST",
       body: JSON.stringify(loginData)
     }); 
-
     const data = await response.json();
-    console.log("讀取到的資料:", data);
     $msg.hideLoading();
     if (data.status == "success") {
+      $user.login({
+        token: data.token,
+        lvl: data.lvl,
+        username: data.username
+      })
+
       $msg.notify.success(data.msg)
       router.push("/profile"); // 或跳轉回上一頁
     } else {

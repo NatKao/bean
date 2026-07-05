@@ -3,7 +3,7 @@
     <nav
       class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm"
     >
-      <div class="max-w-7xl mx-auto px-4">
+      <div class="max-w-[calc(100vw-1rem)] md:max-w-[calc(100vw-6rem)] xl:max-w-7xl xl:mx-auto px-4">
         <div class="flex justify-between items-center h-20">
           <router-link to="/" class="flex items-center cursor-pointer">
             <span class="text-2xl font-bold text-primary tracking-wider"
@@ -23,13 +23,15 @@
               >{{ item.label }}</router-link
             >
 
-            <!--<div class="relative ml-4">
-              <button @click="handleUserBtnClick" class="px-4 py-2 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
+            <div 
+              v-if="$user.state.isLoggedIn"
+              class="relative ml-4">
+              <button @click="handleUseroOut" class="px-4 py-2 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
                 <font-awesome-icon :icon="['fas', 'user']" />
-                {{ userDisplayLabel }}
+                登出
               </button>
               
-              <div
+              <!-- <div
                 v-if="userMenuOpen"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 animate-fade-in origin-top-right"
               >
@@ -64,8 +66,8 @@
                 v-if="userMenuOpen"
                 @click="userMenuOpen = false"
                 class="fixed inset-0 z-40 cursor-default"
-              ></div>
-            </div>-->
+              ></div> -->
+            </div>
           </div>
 
           <div class="md:hidden flex items-center">
@@ -96,8 +98,8 @@
             >{{ item.label }}</router-link
           >
 
-          <div v-if="currentUser" class="border-t border-gray-100 mt-2 pt-2">
-            <div class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase">會員專區</div>
+          <div v-if="$user.state.isLoggedIn" class="border-t border-gray-100 mt-2 pt-2">
+            <!-- <div class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase">會員專區</div>
             <button
               @click="router.push('/profile'); mobileMenuOpen = false"
               class="block w-full text-left px-3 py-3 text-primary font-medium hover:bg-gray-50 flex items-center gap-2"
@@ -109,19 +111,14 @@
               class="block w-full text-left px-3 py-3 text-primary font-medium hover:bg-gray-50 flex items-center gap-2"
             >
               <font-awesome-icon :icon="['fas', 'clock-rotate-left']" />消費紀錄
-            </button>
+            </button> -->
             <button
-              @click="handleLogout"
-              class="block w-full text-left px-3 py-3 text-red-500 font-medium hover:bg-red-50 flex items-center gap-2"
+              @click="handleUseroOut"
+              class="block w-full text-left px-3 py-3 text-primary font-medium hover:bg-red-50 flex items-center gap-2"
             >
-              <font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" />登出
+              <font-awesome-icon :icon="['fas', 'user']" />登出
             </button>
           </div>
-          <button
-            v-else
-            @click="handleUserBtnClick"
-            class="block w-full text-left px-3 py-4 text-primary font-bold border-t border-gray-100"
-          >登入</button>
         </div>
       </div>
     </nav>
@@ -140,13 +137,9 @@
 
 <script setup>
 import { ref, inject } from "vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/OcAuth.js";
-import { storeToRefs } from "pinia";  // 引入 storeToRefs解構
 
-const $msg = inject('$msg')
-const router = useRouter();
-const userStore = useUserStore();
+const $msg = inject('$msg');
+const $user = inject('$user');
 
 // Navigation config
 const navItems = [
@@ -161,28 +154,11 @@ const navItems = [
 const mobileMenuOpen = ref(false);
 const userMenuOpen = ref(false);
 
-// 3. 使用 storeToRefs 取出 State 和 Getters
-// 這樣寫，當 store 變更時，這裡的變數也會自動變更
-const { currentUser, userDisplayLabel } = storeToRefs(userStore);
-
-// 4. 登入按鈕邏輯簡化
-const handleUserBtnClick = () => {
-  // 直接判斷 store 裡的 state
-  if (!currentUser.value) {
-    router.push("/login");
-    mobileMenuOpen.value = false;
-  } else {
-    userMenuOpen.value = !userMenuOpen.value;
-  }
-};
-
-const handleLogout = async () => {
+// 4. 登出按鈕邏輯簡化
+const handleUseroOut = async () => {
   const isOk = await $msg.confirm("確定要登出嗎？");
   if (isOk) {
-    userStore.logout(); // 呼叫 store 的 action
-    userMenuOpen.value = false;
-    mobileMenuOpen.value = false;
-    router.push("/");
+    $user.logout();
   }
 };
 </script>

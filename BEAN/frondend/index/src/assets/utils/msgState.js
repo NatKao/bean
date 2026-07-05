@@ -10,6 +10,7 @@ export const msgState = reactive({
     show: false,
     title: "",
     message: "",
+    type: "info",  // error | warning | info
     resolve: null
   },
 
@@ -124,11 +125,12 @@ export const $msg = {
     }
   },
   // --- Confirm ---
-  confirm(title, message) {
+  confirm(title, message, type) {
     return new Promise(resolve => {
       msgState.confirm.title = title || "確認";
       msgState.confirm.message = message;
       msgState.confirm.show = true;
+      msgState.confirm.type = type || "info";
       msgState.confirm.resolve = resolve;
     });
   },

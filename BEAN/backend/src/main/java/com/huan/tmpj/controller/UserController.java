@@ -1,7 +1,9 @@
 package com.huan.tmpj.controller;
 
-import com.huan.tmpj.entity.User;
-import com.huan.tmpj.mapper.UserMapper;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.huan.tmpj.entity.User;
+import com.huan.tmpj.mapper.UserMapper;
 
 @RestController
 @RequestMapping("/api/users") // 前端呼叫的網址前綴
@@ -21,8 +24,12 @@ public class UserController {
     // 1. 查詢所有使用者
     // URL: GET http://localhost:8080/api/users
     @GetMapping
-    public List<User> getAllUsers() {
-        return userMapper.selectList(null);
+    public Map getAllUsers() {
+    	Map tmp = new HashMap();
+    	tmp.put("returnCode", 0);
+    	tmp.put("data", userMapper.selectList(null));
+    	tmp.put("msg", "查詢成功！");
+        return tmp;
     }
 
     // 2. 新增使用者

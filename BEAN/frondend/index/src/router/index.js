@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routerMap from "./router.js";
+import { $user } from '@/assets/utils/userState' // 直接引入
+
 // import { auth } from "@/stores/Auth";
 // import webConfig from "../config.js";
 const base = process.env.NODE_ENV === "development" ? "/" : "/TEST/";
@@ -18,9 +20,17 @@ const router = createRouter({
   }
 });
 
-
+// 導航守衛 (管理員檢查站)
 router.beforeEach((to, from, next) => {
-  next();
+  if (to.meta.requiresAuth) {
+    if ($user.state.isLoggedIn) {
+      next();
+    } else {
+      next({ name: 'beanWorld' });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
