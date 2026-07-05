@@ -1,3 +1,11 @@
+<!-- 
+  File Name: LocationView.vue
+  Author: huanyao
+  Created Date: 2025-12-07
+  Description: 
+    此元件用於顯示地理交通位置。
+  Reviewed Date: 2026-01-10 huanyao
+-->
 <template>
   <section
     class="max-w-7xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"
@@ -50,12 +58,7 @@ const locationAry = ref([
   },
   {
     title: "國道6號",
-    goto: "下愛蘭交流道 → 右轉中山路四段 → 右轉善新橋(太陽廟前) → 右轉向善路 → 抵達。"
-  },
-
-  {
-    title: "台14線(往埔里方向)",
-    goto: "中山路四段 → 左轉善新橋(見太陽廟路口左轉) → 右轉向善路 → 抵達。"
+    goto: "下北山交流道 → 右轉中正路四段 → 左轉善新橋(太陽廟前) → 右轉向善路 → 抵達。"
   }
 ]);
 </script>

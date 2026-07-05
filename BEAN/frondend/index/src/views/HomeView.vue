@@ -1,3 +1,11 @@
+<!-- 
+  File Name: HomeView.vue
+  Author: huanyao
+  Created Date: 2025-12-07
+  Description: 
+    此元件用於顯示首頁，客人一開始就可以看到的畫面。
+  Reviewed Date: 2025-12-14 huanyao
+-->
 <template>
   <section
     class="max-w-7xl mx-auto w-full p-4 md:p-8 flex items-center justify-center min-h-[calc(100vh-11rem)]"
@@ -16,12 +24,12 @@
           <br />
           <span class="text-primary">深呼吸</span>
         </h1>
-        <p class="text-gray-500 mb-8 leading-relaxed text-lg">
+        <p class="text-gray-500 mb-8 leading-relaxed lg:text-lg md:text-sm">
           遠離都市喧囂，感受時間的緩慢流動。
           <br />簡單、純粹、清新的休憩體驗。
         </p>
         <button
-          @click="$router.push('/booking')"
+          @click="$router.push('/emptyroom')"
           class="w-fit px-8 py-3 bg-primary text-white rounded-full hover:bg-opacity-90 shadow-lg hover:translate-y-[-2px] transition-all"
           >開始旅程</button
         >
@@ -30,39 +38,9 @@
         class="w-full lg:w-7/12 bg-gray-50 lg:p-6 flex items-center justify-center relative h-[350px] lg:h-auto"
       >
         <div
-          class="hidden lg:grid grid-cols-3 gap-4 w-full h-full max-h-[800px]"
+          class="hidden lg:grid grid-cols-1 gap-4 w-full h-full max-h-[800px]"
         >
-          <div class="flex flex-col gap-4">
-            <div
-              class="h-40 md:h-56 w-full rounded-2xl overflow-hidden shadow-lg transform transition hover:scale-[1.02]"
-            >
-              <img :src="homeGallery[0]" class="w-full h-full object-cover" />
-            </div>
-            <div
-              class="h-32 md:h-48 w-full rounded-2xl overflow-hidden shadow-lg transform transition hover:scale-[1.02]"
-            >
-              <img :src="homeGallery[1]" class="w-full h-full object-cover" />
-            </div>
-          </div>
-          <div class="flex flex-col gap-4 pt-12">
-            <div
-              class="h-32 md:h-48 w-full rounded-2xl overflow-hidden shadow-lg transform transition hover:scale-[1.02]"
-            >
-              <img :src="homeGallery[2]" class="w-full h-full object-cover" />
-            </div>
-            <div
-              class="h-40 md:h-56 w-full rounded-2xl overflow-hidden shadow-lg transform transition hover:scale-[1.02]"
-            >
-              <img :src="homeGallery[3]" class="w-full h-full object-cover" />
-            </div>
-          </div>
-          <div class="flex flex-col gap-4 pt-24">
-            <div
-              class="h-64 w-full rounded-2xl overflow-hidden shadow-lg transform transition hover:scale-[1.02]"
-            >
-              <img :src="homeGallery[4]" class="w-full h-full object-cover" />
-            </div>
-          </div>
+          <ImageCarousel :images="homeGallery" />
         </div>
 
         <!-- Mobile/Tablet: Carousel with Swipe (Visible on < lg) -->
@@ -116,41 +94,36 @@
 
 <script setup>
 import { ref, inject, onMounted, onUnmounted } from "vue";
-import axios from "axios";
+import ImageCarousel from "@/components/component/ImageCarousel.vue";
 
 // 搬移原本 Home 相關的變數
 const currentHomeSlide = ref(0);
-const homeGallery = [
+const homeGallery = ref([
   "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1600",
   "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=1600"
-];
+]);
 
-const $baseAxios = inject('$baseAxios');
-const message = ref("等待數據...");
-// 搬移 API 邏輯
-const fetchData = async () => {
-  try {
-    const response2 = await $baseAxios.get("/users");
-    console.log(response2);
-    message.value = response2;
-  } catch (error) {
-    console.error("發生錯誤:", error);
-    message.value = "連線失敗";
-  }
-};
+const $room = inject("$room");
+
+onMounted(() => {
+  startHomeSlideshow();
+  $room.getRoom();
+});
 
 // 搬移 Slideshow 邏輯
 let homeTimer;
 const startHomeSlideshow = () => {
+  const imageModules = import.meta.glob('@/assets/images/img_home_*.{jpg,jpeg,png,webp}', { 
+    eager: true, 
+    import: 'default' 
+  });
+  homeGallery.value = [];
+  homeGallery.value = Object.values(imageModules);
   clearInterval(homeTimer);
   homeTimer = setInterval(() => {
     currentHomeSlide.value = (currentHomeSlide.value + 1) % homeGallery.length;
   }, 3000);
 };
-
-onMounted(() => {
-  startHomeSlideshow();
-});
 
 onUnmounted(() => {
   clearInterval(homeTimer); // 離開頁面要記得清除 Timer
@@ -161,6 +134,7 @@ const handleHomeTouchStart = e => {
   homeTouchStartX = e.touches[0].clientX;
   clearInterval(homeTimer); // Stop auto play on interact
 };
+
 const handleHomeTouchEnd = e => {
   const touchEndX = e.changedTouches[0].clientX;
   const diff = homeTouchStartX - touchEndX;
